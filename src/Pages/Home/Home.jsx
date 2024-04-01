@@ -136,26 +136,38 @@ const Home = () => {
   };
 
   const filter_by_genre = (genre) => {
+    setLoaded(false);
     let match_games;
     if (genre === "All") {
-      return grouped2;
+      setGrouped(grouped2);
+      clearTimeout();
+      setTimeout(() => {
+        setLoaded(true);
+      }, 2000);
+    }else{
+      match_games = grouped2.filter((g) => g.category === genre);
+      if (match_games.length < 1) {
+        setGrouped([
+          {
+            category: "404",
+            message: "No game found",
+          },
+        ]);
+        setLoaded(true);
+      } else {
+        setGrouped(match_games);
+        clearTimeout();
+        setTimeout(() => {
+          setLoaded(true);
+        }, 2000);
+      }
     }
-    match_games = grouped2.filter((g) => g.category === genre);
-    if (match_games.length < 1) {
-      return [
-        {
-          category: "404",
-          message: "No game found",
-        },
-      ];
-    } else {
-      console.log(match_games);
-      return match_games;
     }
-  };
+  
 
   const debounceSearch = _.debounce(filter_by_name, 300);
   const debounceSearch_Platform = _.debounce(filter_by_platform, 200);
+  const debounceSearch_Genre = _.debounce(filter_by_genre, 300);
 
   useEffect(() => {
     const options = {
@@ -164,18 +176,12 @@ const Home = () => {
       headers: {
         "X-RapidAPI-Key": "ca79c90e39msh0c7416ecb391792p1db789jsn0814d1f72215",
         "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
-      },
+      }
 
-      // success:res=>{
-      //     console.log(res)
-      //     setData(res)
-      // },
-      // error:err=>{
-      //     console.log(err)
-      // }
+      
     };
 
-    // $.ajax(options)
+   
 
     const games = [];
     axios
@@ -206,12 +212,12 @@ const Home = () => {
       });
     emitter.on("done", (e) => console.log("done"));
     return () => {
-      // setLoaded(false)
+      
       console.log("hello");
     };
   }, []);
   
-  document.title = 'GAMEVERSE | Home Free Games for PC and WEB'
+  document.title = 'GAMEVERSE | Home Free Games for PC and WE'
   return (
     <>
       <ConfigProvider
@@ -336,7 +342,11 @@ const Home = () => {
                   color={genre === "All" ? "success" : "default"}
                   variant={genre === "All" ? "dot" : "bordered"}
                   radius="sm"
-                  className="border "
+                  className="border cursor-pointer transition duration-75"
+                  onClick={async (e) =>{
+                    setGenre('All');
+                    filter_by_genre('All')
+                  }}
                 >
                   <p className="font-extralight tracking-wider custom-font-ubuntu">
                     All
@@ -347,16 +357,9 @@ const Home = () => {
                   : grouped2.map((g) => {
                       return (
                         <Chip
-                          onClick={async (e) => {
+                          onClick={async (e) =>{
                             setGenre(g.category);
-                            setLoaded(false);
-                            const mt = filter_by_genre(g.category);
-
-                            setGrouped(mt);
-                            clearTimeout();
-                            setTimeout(() => {
-                              setLoaded(true);
-                            }, 2000);
+                            filter_by_genre(g.category)
                           }}
                           color={g.category === genre ? "success" : "default"}
                           endContent={
@@ -395,7 +398,7 @@ const Home = () => {
                       <Spinner />
                     </div>
                   ) : grouped[0].category === "404" ? (
-                    <Empty description="No game found" image={Gp2} />
+                    <Empty description="No game found"/>
                   ) : (
                     grouped.map((g) => {
                       return (
