@@ -1,0 +1,12 @@
+
+.custom-font-ubuntu {
+    font-family: 'Ubuntu', sans-serif!important;
+}
+
+.text-shadow{
+    text-shadow: black 5px 5px 50px ;
+}
+
+.app-bg{
+    background: bottom right -webkit-linear-gradient(rgb(170, 128, 241),rgb(106, 154, 216));
+}

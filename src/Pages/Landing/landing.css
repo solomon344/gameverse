@@ -1,0 +1,13 @@
+*{
+    font-family: 'Lucida Sans';
+}
+
+.custom-font-ubuntu {
+    font-family: 'Ubuntu', sans-serif!important;
+}
+
+#banner{
+    background: url('./main.jpg') black;
+    background-size: cover;
+
+}
