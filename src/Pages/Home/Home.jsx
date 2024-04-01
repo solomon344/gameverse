@@ -63,7 +63,11 @@ const Home = () => {
     setLoaded(false);
     const match_games = [];
     if (game_name === "") {
-      return grouped2;
+      setGrouped(grouped2);
+      clearTimeout();
+      setTimeout(() => {
+        setLoaded(true);
+      }, 2000);
     }
     grouped2.map((g) => {
       const match = g.games.filter((game) =>
@@ -102,7 +106,11 @@ const Home = () => {
     setLoaded(false);
     const match_games = [];
     if (name === "both") {
-      return grouped2;
+      setGrouped(grouped2);
+      clearTimeout();
+      setTimeout(() => {
+        setLoaded(true);
+      }, 2000);
     }
     grouped2.map((g) => {
       const match = g.games.filter((game) => game.platform.includes(name));
