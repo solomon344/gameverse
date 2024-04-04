@@ -489,7 +489,7 @@ const Home = () => {
                                     <Skeleton isLoaded={loaded}>
                                       <Image
                                         removeWrapper
-                                        className="w-full h-[120px] lg:min-h-[182px] lg:max-h-full"
+                                        className="w-full h-[120px] sm:min-h-[182px] lg:max-h-full"
                                         radius="none"
                                         src={game.thumbnail}
                                       />
