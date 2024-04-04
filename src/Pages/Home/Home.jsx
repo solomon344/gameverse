@@ -13,6 +13,8 @@ import {
   Chip,
   Autocomplete,
   AutocompleteItem,
+  Accordion,
+  AccordionItem,
 } from "@nextui-org/react";
 import { Layout, Menu, ConfigProvider, Empty } from "antd";
 import Logo from "../../assets/Untitled.png";
@@ -24,6 +26,7 @@ import {
   HarmonyOSOutlined,
   HeartOutlined,
   SearchOutlined,
+  BarsOutlined,
 } from "@ant-design/icons";
 import _ from "lodash";
 import EventEmitter from "EventEmitter";
@@ -47,7 +50,6 @@ const Home = () => {
   const [loaded, setLoaded] = useState(false);
   const [genre, setGenre] = useState("All");
   const [selected, setSelected] = useState("");
-
 
   const emitter = new EventEmitter();
   const items = [
@@ -152,7 +154,7 @@ const Home = () => {
       setTimeout(() => {
         setLoaded(true);
       }, 2000);
-    }else{
+    } else {
       match_games = grouped2.filter((g) => g.category === genre);
       if (match_games.length < 1) {
         setGrouped([
@@ -170,8 +172,7 @@ const Home = () => {
         }, 2000);
       }
     }
-    }
-  
+  };
 
   const debounceSearch = _.debounce(filter_by_name, 300);
   const debounceSearch_Platform = _.debounce(filter_by_platform, 200);
@@ -184,12 +185,8 @@ const Home = () => {
       headers: {
         "X-RapidAPI-Key": "ca79c90e39msh0c7416ecb391792p1db789jsn0814d1f72215",
         "X-RapidAPI-Host": "free-to-play-games-database.p.rapidapi.com",
-      }
-
-      
+      },
     };
-
-   
 
     const games = [];
     axios
@@ -220,12 +217,11 @@ const Home = () => {
       });
     emitter.on("done", (e) => console.log("done"));
     return () => {
-      
       console.log("hello");
     };
   }, []);
-  
-  document.title = 'GAMEVERSE | Home Free Games for PC and WE'
+
+  document.title = "GAMEVERSE | Home Free Games for PC and WE";
   return (
     <>
       <ConfigProvider
@@ -257,6 +253,7 @@ const Home = () => {
             collapsible
             collapsed={collapsed}
             onCollapse={(value) => setCollapsed(value)}
+            className="hidden lg:flex"
           >
             <Link href={"/"} className="demo-logo-vertical w-full p-2">
               <Image className="onject-corver " src={Logo} alt="logo" />
@@ -294,7 +291,7 @@ const Home = () => {
                 }}
               />
 
-              <div className="h-full flex items-center w-2/4 pr-2">
+              <div className="h-full flex items-center w-3/4 lg:w-2/4 pr-2">
                 <Autocomplete
                   onSelectionChange={(e) => {
                     debounceSearch(e || "");
@@ -345,15 +342,68 @@ const Home = () => {
               }
               className="pb-[82px]"
             >
-              <div className="w-full flex flex-wrap gap-2 p-2 z-20 ">
+              <Accordion className="lg:hidden">
+                <AccordionItem
+                  startContent={<BarsOutlined />}
+                  className="lg:hidden"
+                  title="CATEGORIES"
+                >
+                  <div className="w-full flex flex-wrap gap-2 p-2 z-20 ">
+                    <Chip
+                      color={genre === "All" ? "success" : "default"}
+                      variant={genre === "All" ? "dot" : "bordered"}
+                      radius="sm"
+                      className="border cursor-pointer transition duration-75"
+                      onClick={async (e) => {
+                        setGenre("All");
+                        filter_by_genre("All");
+                      }}
+                    >
+                      <p className="font-extralight tracking-wider custom-font-ubuntu">
+                        All
+                      </p>
+                    </Chip>
+                    {grouped2.length < 1
+                      ? ""
+                      : grouped2.map((g) => {
+                          return (
+                            <Chip
+                              onClick={async (e) => {
+                                setGenre(g.category);
+                                filter_by_genre(g.category);
+                              }}
+                              color={
+                                g.category === genre ? "success" : "default"
+                              }
+                              endContent={
+                                <p className="text-purple-500 custom-font-ubuntu">
+                                  {g.games.length}
+                                </p>
+                              }
+                              variant={
+                                g.category === genre ? "dot" : "bordered"
+                              }
+                              radius="sm"
+                              className="border cursor-pointer transition duration-75"
+                            >
+                              <p className="font-extralight tracking-wider custom-font-ubuntu">
+                                {g.category}
+                              </p>
+                            </Chip>
+                          );
+                        })}
+                  </div>
+                </AccordionItem>
+              </Accordion>
+              <div className="w-full hidden lg:flex flex-wrap gap-2 p-2 z-20 ">
                 <Chip
                   color={genre === "All" ? "success" : "default"}
                   variant={genre === "All" ? "dot" : "bordered"}
                   radius="sm"
                   className="border cursor-pointer transition duration-75"
-                  onClick={async (e) =>{
-                    setGenre('All');
-                    filter_by_genre('All')
+                  onClick={async (e) => {
+                    setGenre("All");
+                    filter_by_genre("All");
                   }}
                 >
                   <p className="font-extralight tracking-wider custom-font-ubuntu">
@@ -365,9 +415,9 @@ const Home = () => {
                   : grouped2.map((g) => {
                       return (
                         <Chip
-                          onClick={async (e) =>{
+                          onClick={async (e) => {
                             setGenre(g.category);
-                            filter_by_genre(g.category)
+                            filter_by_genre(g.category);
                           }}
                           color={g.category === genre ? "success" : "default"}
                           endContent={
@@ -406,7 +456,7 @@ const Home = () => {
                       <Spinner />
                     </div>
                   ) : grouped[0].category === "404" ? (
-                    <Empty description="No game found"/>
+                    <Empty description="No game found" />
                   ) : (
                     grouped.map((g) => {
                       return (
@@ -427,7 +477,7 @@ const Home = () => {
                               </p>
                             </div>
                           </Skeleton>
-                          <div className="w-full grid grid-cols-3 gap-8">
+                          <div className="w-full grid grid-cols-2 lg:grid-cols-3 gap-2 lg:gap-8">
                             {g.games.map((game) => {
                               return (
                                 <Card
@@ -439,7 +489,7 @@ const Home = () => {
                                     <Skeleton isLoaded={loaded}>
                                       <Image
                                         removeWrapper
-                                        className="w-full min-h-[182px] max-h-full"
+                                        className="w-full h-[120px] lg:min-h-[182px] lg:max-h-full"
                                         radius="none"
                                         src={game.thumbnail}
                                       />
@@ -475,15 +525,15 @@ const Home = () => {
                                           isLoaded={loaded}
                                           className={
                                             loaded === false
-                                              ? "rounded-full line-clamp-2 h-[20px]"
-                                              : ""
+                                              ? "rounded-full hidden lg:block line-clamp-2 h-[20px]"
+                                              : "hidden lg:block"
                                           }
                                         >
                                           <p className="line-clamp-2 text-gray-500 text-xs tracking-wider custom-font-ubuntu text-pretty font-serif">
                                             {game.short_description}
                                           </p>
                                         </Skeleton>
-                                        <div className="flex w-full justify-between custom-font-ubuntu text-gray-500 text-pretty font-serif">
+                                        <div className="lg:flex w-full hidden justify-between custom-font-ubuntu text-gray-500 text-pretty font-serif">
                                           <Skeleton
                                             isLoaded={loaded}
                                             className={

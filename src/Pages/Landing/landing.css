@@ -9,5 +9,22 @@
 #banner{
     background: url('./main.jpg') black;
     background-size: cover;
+    /* background-attachment: scroll; */
 
+}
+
+
+
+.bg-c{
+    background-size: cover;
+}
+
+
+@media only screen and (orientation:portrait) {
+    
+    #banner{
+        background: url('./main.jpg') black;
+        background-size: fill;
+        /* background-attachment: scroll; */
+    }
 }

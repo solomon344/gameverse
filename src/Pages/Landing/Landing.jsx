@@ -8,9 +8,9 @@ const Landing = () => {
 
   return (
     <>
-      <main className="fixed inset-0 w-[100dvw] h-[100dvh]">
-        <div id="banner" className="w-full h-full flex flex-col gap-16 ">
-          <div className="h-2/4 flex flex-col justify-between p-2">
+      <main className=" h-[100dvh] w-[100dvw]">
+        <div id="banner" className="w-full h-full flex flex-col gap-16 overflow-y-auto ">
+          <div className="lg:h-2/4 flex flex-col justify-between p-2">
             <div data-aos="fade-up" className="flex justify-end">
               <Button variant="none">
                 <Link
@@ -24,8 +24,8 @@ const Landing = () => {
                 </Link>
               </Button>
             </div>
-            <div data-aos="fade-in" className=" text-white ">
-              <p className="text-[3rem] custom-font-ubuntu">
+            <div data-aos="fade-in" className=" text-white w-2/4">
+              <p className="lg:text-[3rem] text-[2rem] custom-font-ubuntu">
                 Welcome To GAMEVERSE
               </p>
               <p className="custom-font-ubuntu text-lg font-thin p-1">
@@ -34,7 +34,7 @@ const Landing = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-16 w-full p-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 w-full p-4">
             <div data-aos="zoom-out" className="relative rounded-lg">
               <Image
                 src="https://www.freetogame.com/g/521/thumbnail.jpg"
