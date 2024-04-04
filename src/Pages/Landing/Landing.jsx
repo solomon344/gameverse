@@ -34,7 +34,7 @@ const Landing = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 w-full p-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 w-full p-4">
             <div data-aos="zoom-out" className="relative rounded-lg">
               <Image
                 src="https://www.freetogame.com/g/521/thumbnail.jpg"
